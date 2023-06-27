@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ekart-Seller | Dashboard</title>
+  <title>Ekart-Seller | ModifyItem</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -28,6 +28,9 @@
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
+
+  <!-- Preloader -->
+ 
 
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -122,7 +125,7 @@
       </li>
     </ul>
   </nav>
-  <!-- /.navbar --> 
+  <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -154,23 +157,11 @@
       
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="sellerDashboard" class="nav-link">
+                <a href="" class="nav-link active ">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard</p>
+                  <p>Item Modification</p>
                 </a>
                 </li>
-                <li class="nav-item">
-                  <a href="addItem" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Add item</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                    <a href="showItem" class="nav-link active">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Show item</p>
-                    </a>
-                  </li>
                 </ul>
         
       </nav>
@@ -179,98 +170,83 @@
     <!-- /.sidebar -->
   </aside>
 
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <div class="content-header">
+    <section class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Your Products</h1>
-          </div><!-- /.col -->
-          
-        </div><!-- /.row -->
+        <div class="row ">
+          <div class="col">
+            <h1>Modify Item</h1>
+          </div>
+        </div>
       </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+    </section>
 
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-            <div class="col-12">
-              <div class="card">
-                <!-- /.card-header -->
+       
+            <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Modify Items for the buyers</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form action="itemUpdate" method="post" enctype="multipart/form-data">
+               <input type="hidden" name="id" value="<%=data[0]._id%>">
                 <div class="card-body">
-                  <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4"><div class="row"><div class="col-sm-12 col-md-6"></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
-                    <thead>
-                    <tr>
-                        <th class="sorting sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">Sl No.</th>
-                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Product Name</th>
-                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Product Category</th>
-                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">Item Details</th>
-                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">Item price</th>
-                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">Item image</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    <% var i=1 
-                    data.forEach((e)=>{
-                        %>
-                        <tr>
-                            <td><%=i%></td>
-                            <td><%=e.itemName%></td>
-                            <td><%=e.itemCategory%></td>
-                            <td><%=e.itemDetails%></td>
-                            <td><%=e.itemPrice%></td>
-                            <td><img src="<%=e.itemImg%>" alt="img"></td>
-                            <td><a href="itemModify?id=<%=e._id%>" class="btn btn-sm btn-app">
-                                <i class="fas fa-edit"></i> 
-                              </a>   <a href="itemDelete?id=<%=e._id%>" class="btn btn-sm btn-app">
-                                <i class="fas fa-trash"></i>
-                              </a></td>
-                        </tr>
-                        <%
-                        i++;
-                    })
-                    %> 
-                    </tbody>
-                    
-                  </table></div></div>
-                 </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Name of the Product</label>
+                    <input type="text" value="<%=data[0].itemName%>" name="itemName"class="form-control" id="exampleInputEmail1" placeholder="Enter Product Name">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Product Category</label>
+                    <input type="text" value="<%=data[0].itemCategory%>" name="itemCategory"class="form-control" id="exampleInputEmail1" placeholder="Enter Product Category">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Product Details</label>
+                    <textarea class="form-control" name="itemDetails"  placeholder="Enter Product Details"><%=data[0].itemDetails%></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Enter Price</label>
+                    <input type="number" value="<%=data[0].itemPrice%>" name="itemPrice"class="form-control" id="exampleInputEmail1" placeholder="Enter Product Price">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputFile">Enter Product Photo</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" value="<%=data[0].itemImg%>" class="custom-file-input" name="itemImg" id="exampleInputFile">
+                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <!-- /.card-body -->
+                <div class="text-center">
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">Submit</button>
               </div>
-              <!-- /.card -->
-  
-              
-          <!-- ./col -->
-          
-          <!-- ./col -->
-          
-        <!-- /.row -->
-        <!-- Main row -->
-       
-        <!-- /.row (main row) -->
-      </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
+              </form>
+            
+            
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <strong>Created for E-kart</a>.</strong>
     
   </footer>
-
-  <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
   </aside>
+  
+
+  <!-- Control Sidebar -->
+  
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>

@@ -15,7 +15,7 @@ let fname='';
 
 app.get('/',(req,res)=>{
     res.render('home',{msg:''})
-})
+})  
 app.use('/seller',vendorController)
 
 app.post('/register',(req,res)=>{

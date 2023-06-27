@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const multer  = require('multer')
+router.use(express.json())
+//var bodyParser = require('body-parser')
+//router.use(bodyParser.urlencoded({ extended: false }))
 const registerSeller=require('.././models/sellerRegisterModel')
 const addItem=require('.././models/addItemModel')
 router.use(express.static('public'))
@@ -79,6 +82,25 @@ router.get('/itemDelete',(req,res)=>{
     addItem.findByIdAndDelete(id)
     .then(()=>{
         res.redirect("showItem")
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+})
+router.get('/itemModify',(req,res)=>{
+    var id=req.query.id;
+    var qry={_id :id}
+    addItem.find(qry).then((data)=>{
+        res.render('modifyItem',{data:data})
+    }).catch((err)=>{
+        console.log(err)
+    })
+    
+})
+router.post('/itemUpdate',upload.single('img'),(req,res)=>{
+    addItem.updateMany({_id:req.body.id},{$set: {itemName:req.body.itemName,itemCategory:req.body.itemCategory, itemDetails:req.body.itemDetails,itemPrice:req.body.itemPrice,itemImg:req.body.itemImg}}).then((data)=>{
+        console.log('Data Modified')
+        res.redirect('showItem')
     })
     .catch((err)=>{
         console.log(err)
