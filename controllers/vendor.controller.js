@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const multer  = require('multer')
 router.use(express.json())
-//var bodyParser = require('body-parser')
-//router.use(bodyParser.urlencoded({ extended: false }))
+var bodyParser = require('body-parser')
+router.use(bodyParser.urlencoded({ extended: false }))
 const registerSeller=require('.././models/sellerRegisterModel')
 const addItem=require('.././models/addItemModel')
 router.use(express.static('public'))
@@ -23,7 +23,7 @@ var mstorage = multer.diskStorage({
 router.get('/selRegister',(req,res)=>{
     res.render('sellerRegistration')
 })
-router.post('/selReg',upload.single('img'),(req,res)=>{
+router.post('/selReg',upload.single('selImg'),(req,res)=>{
     const newSeller=new registerSeller(req.body);
     console.log(newSeller)
     newSeller.save()
@@ -44,7 +44,7 @@ router.post('/selLogin',(req,res)=>{
         sellerID=data[0]._id
         if(data.length==0)
         {
-            res.render('home',{msg:'failed'})
+            res.render('home',{msg:'failed',data:[]})
         }else{
            
         res.render('Dashboard/index')
@@ -60,9 +60,10 @@ router.get('/sellerDashboard',(req,res)=>{
 router.get('/addItem',(req,res)=>{
     res.render('addItem')
 })
-router.post('/itemAdded',(req,res)=>{
+router.post('/itemAdded',upload.single('itemImg'),(req,res)=>{
     const item=new addItem(req.body);
     item.SID=sellerID;
+    console.log(item)
     item.save()
     
 })
@@ -70,6 +71,7 @@ router.get('/showItem',(req,res)=>{
     addItem.find()
     .then((data)=>{
         res.render('showItem',{data:data})
+        
     })
     .catch((err)=>{
         console.log(err)
@@ -97,7 +99,7 @@ router.get('/itemModify',(req,res)=>{
     })
     
 })
-router.post('/itemUpdate',upload.single('img'),(req,res)=>{
+router.post('/itemUpdate',upload.single('itemImg'),(req,res)=>{
     addItem.updateMany({_id:req.body.id},{$set: {itemName:req.body.itemName,itemCategory:req.body.itemCategory, itemDetails:req.body.itemDetails,itemPrice:req.body.itemPrice,itemImg:req.body.itemImg}}).then((data)=>{
         console.log('Data Modified')
         res.redirect('showItem')

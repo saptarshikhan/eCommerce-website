@@ -3,6 +3,7 @@ const express=require('express')
 const app=express()
 const registerUser=require('./models/registerModel')
 const registerSeller=require('./models/sellerRegisterModel')
+const addItem=require('./models/addItemModel')
 const vendorController=require('./controllers/vendor.controller')
 var bodyParser = require('body-parser')
 const { closeDelimiter } = require('ejs')
@@ -10,12 +11,19 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(express.static('public'))
 app.set('view engine','ejs')
-const multer  = require('multer')   
 let fname='';
-
+let item=[]
 app.get('/',(req,res)=>{
-    res.render('home',{msg:''})
-})  
+    addItem.find()
+    .then((data)=>{
+        res.render('home',{msg:'',data:data})
+        item=data;
+        
+    })
+    .catch((err)=>{
+        console.log(err)
+    } 
+)})  
 app.use('/seller',vendorController)
 
 app.post('/register',(req,res)=>{
@@ -36,10 +44,14 @@ app.post('/login',(req,res)=>{
         console.log(data)
         if(data.length==0)
         {
-            res.render('home',{msg:'failed'})
+            res.render('home',{msg:'failed',data:item})
+        res.redirect('home')
+
         }else{
             console.log(data.name)
-        res.render('home',{msg:data[0].name})
+        res.render('home',{msg:data[0].name,data:item})
+        res.redirect('home')
+
         }
     }).catch((err)=>{
        

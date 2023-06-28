@@ -96,6 +96,29 @@
     }
     %>
 </div>
+    <div class="container">
+        <div class="row">
+        <%data.forEach((e)=>{
+            %>
+            <div class="m-2">
+                <div class="col col-md-3">
+                <div class="card" style="width: 300px;">
+                    <img src="<%=e.itemImg%>" class="card-img-top" alt="Sample Image">
+                    <div class="card-body text-center">
+                        <h4 class="card-title"><%=e.itemName%></h4>
+                        <p class="card-text"><%=e.itemDetails%></p>
+                        <h5 class="card-primary"><strong><%=e.itemPrice%></strong></h5>
+
+                        <a href="#" class="btn btn-primary">Add to Cart</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <%
+        })
+        %>
+        </div>
+    </div>
     <div class="m-4">
         <!-- Button HTML (to Trigger Modal) -->
     
