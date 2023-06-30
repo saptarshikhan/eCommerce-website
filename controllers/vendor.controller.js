@@ -7,6 +7,7 @@ router.use(bodyParser.urlencoded({ extended: false }))
 const registerSeller=require('.././models/sellerRegisterModel')
 const addItem=require('.././models/addItemModel')
 router.use(express.static('public'))
+var fname='NA'
 var mstorage = multer.diskStorage({   
     destination: function(req, file, cb) { 
        cb(null, 'public/upload');    
@@ -62,9 +63,10 @@ router.get('/addItem',(req,res)=>{
 })
 router.post('/itemAdded',upload.single('itemImg'),(req,res)=>{
     const item=new addItem(req.body);
+    item.itemImg=fname
     item.SID=sellerID;
-    console.log(item)
     item.save()
+    res.redirect('showItem')
     
 })
 router.get('/showItem',(req,res)=>{

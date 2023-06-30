@@ -8,4 +8,4 @@ const userSchema= new mongoose.Schema({
     itemImg:String
 })
 
-module.exports=mongoose.model('tbladdItem',userSchema)
+module.exports=mongoose.model('tbladdItemCart',userSchema)

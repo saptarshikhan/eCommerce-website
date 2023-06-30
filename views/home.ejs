@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+        .card-img-top{
+            height: 200px;
+            width: 300px;
+
+        }
+        
+    </style>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ekart-Home</title>
@@ -98,18 +106,34 @@
 </div>
     <div class="container">
         <div class="row">
-        <%data.forEach((e)=>{
-            %>
-            <div class="m-2">
-                <div class="col col-md-3">
-                <div class="card" style="width: 300px;">
-                    <img src="<%=e.itemImg%>" class="card-img-top" alt="Sample Image">
-                    <div class="card-body text-center">
-                        <h4 class="card-title"><%=e.itemName%></h4>
-                        <p class="card-text"><%=e.itemDetails%></p>
-                        <h5 class="card-primary"><strong><%=e.itemPrice%></strong></h5>
 
-                        <a href="#" class="btn btn-primary">Add to Cart</a>
+        <%
+        data.forEach((e)=>{
+            %>
+           
+            <div class="col-md-3">
+            <div class="m-2">
+                <div class="card" style="width: 300px;">
+                    <img src="upload/<%=e.itemImg%>"  class="card-img-top" alt="Sample Image" >
+                    <div class="card-body text-center">
+                        <h4 class="card-title"><strong>Name- </strong><%=e.itemName%></h4>
+                        <p class="card-text"><strong>Details- </strong><%=e.itemDetails%></p>
+                        <h5 class="card-primary"><strong>Price- <span>&#8377;</span><%=e.itemPrice%></strong></h5>
+
+                        <form action="addCart" method="post">
+                            <select class="form-select">
+                                <option selected>Select Quantity</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                            <div class="m-2">
+                            <button type="submit" class="btn btn-primary">Add to Cart
+                                </button>
+                                </div>
+                        </form>
                     </div>
                 </div>
                 </div>

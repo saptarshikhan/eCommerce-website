@@ -45,12 +45,11 @@ app.post('/login',(req,res)=>{
         if(data.length==0)
         {
             res.render('home',{msg:'failed',data:item})
-        res.redirect('home')
 
         }else{
             console.log(data.name)
         res.render('home',{msg:data[0].name,data:item})
-        res.redirect('home')
+        
 
         }
     }).catch((err)=>{
@@ -60,6 +59,7 @@ app.post('/login',(req,res)=>{
 
 
 })
+
 
 //--------------------VENDOR---------------------------------------------
 
