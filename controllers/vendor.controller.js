@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const multer  = require('multer')
+const cookieParser = require("cookie-parser");
+const sessions = require('express-session');
 router.use(express.json())
 var bodyParser = require('body-parser')
 router.use(bodyParser.urlencoded({ extended: false }))
@@ -8,6 +10,19 @@ const registerSeller=require('.././models/sellerRegisterModel')
 const addItem=require('.././models/addItemModel')
 router.use(express.static('public'))
 var fname='NA'
+
+//=========================Session Management===========================
+const oneDay = 1000 * 60 * 60 * 24;
+router.use(sessions({
+secret: "thisismysecrctekey",
+saveUninitialized:true,
+cookie: { maxAge: oneDay },
+resave: false
+}));
+
+router.use(cookieParser());
+
+//======================================================================
 var mstorage = multer.diskStorage({   
     destination: function(req, file, cb) { 
        cb(null, 'public/upload');    
@@ -43,11 +58,13 @@ router.post('/selLogin',(req,res)=>{
     registerSeller.find(query)
     .then((data)=>{
         sellerID=data[0]._id
+        
         if(data.length==0)
         {
+            
             res.render('home',{msg:'failed',data:[]})
         }else{
-           
+            req.session.sid=sellerID;
         res.render('Dashboard/index')
         }
     }).catch((err)=>{
