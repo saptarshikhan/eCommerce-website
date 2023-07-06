@@ -73,41 +73,7 @@
                     </div>
                     <a href="#" class="nav-item nav-link active mx-3"><i class="fa fa-shopping-cart" style="font-size: 18px;"></i>Cart</a>
                 </div>
-                <div class="navbar-nav ms-auto">
-                    <a href="#" class="nav-item nav-link"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" data-title="SignIn">
-                        <% if(msg=='failed') {
-                            %>
-                            Login
-                        <%
-                    }else if (msg!='') {
-                        %>
-                            <strong>Hi,<%=msg%></strong>
-                        <% 
-                    }else if (msg===''){
-                        %>
-                        Login
-                        <%
-                    }
-                    %>
-                    
-                    </button></a>
-                    <a href="#" class="nav-item nav-link"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal1" data-title="Register">
-                        <% if(msg=='failed') {
-                            %>
-                            Register
-                        <%
-                    }else if (msg!='') {
-                        %>
-                        LogOut
-                        <% 
-                    }else if(msg===''){
-                        %>
-                        Register
-                        <%
-                    }
-                    %>
-                    </button></a>
-                </div>
+                
                 
             </div>
         </div>
@@ -115,66 +81,25 @@
 
 
     </nav>
-    <div class="m-1">
-    <% if (msg=='failed') {
-        %>
-            <div class="alert alert-danger alert-dismissible fade show">
-                <strong>Authentication Failed</strong> Try again, if you are a new user then register!!!.
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        
-        <%
-    }else if(msg!='') {
-    
-    %>
-       <div class="alert alert-success alert-dismissible fade show">
-                <strong>Hay <%=msg%>,</strong> You logged in successfully.
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        <%
-    }
-    %>
-</div>
-    <div class="container">
+       <div class="container">
         <div class="text-center">
-            <h2>All Products</h2>
+            <h1>Add Item</h1>
         </div>
-        <div class="row">
-
-        <%
-        data.forEach((e)=>{
-            %>
-           
-            <div class="col-md-3">
-            <div class="m-2">
-                <div class="card" style="width: 300px;">
-                    <img src="upload/<%=e.itemImg%>"  class="card-img-top" alt="Sample Image" >
-                    <div class="card-body text-center">
-                        <h4 class="card-title"><strong>Name- </strong><%=e.itemName%></h4>
-                        <p class="card-text"><strong>Details- </strong><%=e.itemDetails%></p>
-                        <h5 class="card-primary"><strong>Price- <span>&#8377;</span><%=e.itemPrice%></strong></h5>
-                                <div class="m-2">
-                            <%
-                                    var cls="disabled"
-                                    if(msg!='')
-                                    {
-                                        cls="enabled"
-                                    }
-                            %>
-                            <a href="addCart?id=<%=e._id%>"  class="btn btn-primary <%=cls%>">Add to Cart
-                            </a>
-                                </div>
-
-                    </div>
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="..." class="img-fluid rounded-start" alt="...">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">Card title</h5>
+                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
                 </div>
-                </div>
+              </div>
             </div>
-            <%
-        })
-        %>
-        </div>
-        
-    </div>
+          </div>
+       </div>
     <div class="m-4">
         <!-- Button HTML (to Trigger Modal) -->
     

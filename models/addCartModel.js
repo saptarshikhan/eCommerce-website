@@ -1,11 +1,10 @@
 const mongoose=require('mongoose')
 const userSchema= new mongoose.Schema({
-    SID:String,
+    bid:String,
+    itemID:String,
     itemName:String,
-    itemCategory:String,
-    itemDetails:String,
     itemPrice:String,
-    itemImg:String
+    itemQuantity:Number
 })
 
 module.exports=mongoose.model('tbladdItemCart',userSchema)

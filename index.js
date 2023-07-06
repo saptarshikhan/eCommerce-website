@@ -2,6 +2,7 @@ require('./models/db')
 const express=require('express')
 const app=express()
 const registerUser=require('./models/registerModel')
+const cart=require('./models/addCartModel')
 const registerSeller=require('./models/sellerRegisterModel')
 const addItem=require('./models/addItemModel')
 const vendorController=require('./controllers/vendor.controller')
@@ -57,7 +58,6 @@ app.post('/login',(req,res)=>{
     var query={'email':mail,'pwd':password}
     registerUser.find(query)
     .then((data)=>{
-        console.log(data)
         const userID=data._id;
         if(data.length==0)
         {
@@ -79,6 +79,24 @@ app.post('/login',(req,res)=>{
 
 })
 
+
+app.get('/addCart',(req,res)=>{
+    //console.log(req.query.id)
+    var id=req.query.id
+    res.render('showCart')
+     var qry={_id:id}
+     addItem.find(qry).then((data)=>{
+         newCart=new cart(data)
+        newCart.save().then((d)=>{
+            console.log('data Saved')
+        }).catch((err)=>{
+            console.log(err)
+        })
+     })
+     .catch((err)=>{
+        console.log(err)
+     })
+})
 
 //--------------------VENDOR---------------------------------------------
 
