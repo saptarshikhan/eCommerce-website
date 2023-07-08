@@ -8,7 +8,7 @@ const addItem=require('./models/addItemModel')
 const vendorController=require('./controllers/vendor.controller')
 var bodyParser = require('body-parser')
 const cookieParser = require("cookie-parser");
-const sessions = require('express-session');
+var session = require('express-session');
 
 const { closeDelimiter } = require('ejs')
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -21,7 +21,7 @@ var userLogin=false
 app.get('/',(req,res)=>{
     addItem.find()
     .then((data)=>{
-        res.render('home',{msg:'',data:data,userLogin:userLogin})
+        res.render('home',{msg:'',data:data,userLogin:userLogin,size:0})
         item=data;
         
     })
@@ -42,7 +42,7 @@ app.post('/register',(req,res)=>{
 })
 //======================================SESSION MANAGEMENT===================
 const oneDay = 1000 * 60 * 60 * 24;
-app.use(sessions({
+app.use(session({
 secret: "thisismysecrctekey1",
 saveUninitialized:true,
 cookie: { maxAge: oneDay },
@@ -51,6 +51,7 @@ resave: false
 
 app.use(cookieParser());
 //===========================================================================
+app.
 app.post('/login',(req,res)=>{
     
     mail=req.body.email
@@ -58,22 +59,28 @@ app.post('/login',(req,res)=>{
     var query={'email':mail,'pwd':password}
     registerUser.find(query)
     .then((data)=>{
-        const userID=data._id;
+        console.log(data)
+        let userID=data[0]._id;
         if(data.length==0)
         {
             res.render('home',{msg:'failed',data:item})
+            //res.send({msg:'failed'})
 
         }else{
-            req.session.uid=userID;
+
+            session=req.session;
+            session.uid=userID;
+            console.log("Session Data="+req.session.uid)
             req.session.uname=data.name
             userLogin=true
-        res.render('home',{msg:data[0].name,data:item,userLogin:userLogin})
-        
+            //console.log(session.cartItem)
+            res.render('home',{msg:data[0].name,data:item,userLogin:userLogin})
+            //res.send({msg:'success'})
 
         }
     }).catch((err)=>{
        
-        console.log('err')
+        console.log(err)
     })
 
 
@@ -83,21 +90,39 @@ app.post('/login',(req,res)=>{
 app.get('/addCart',(req,res)=>{
     //console.log(req.query.id)
     var id=req.query.id
-    res.render('showCart')
      var qry={_id:id}
+     var bid=req.session.uid
+     console.log("USRR ID="+bid)
      addItem.find(qry).then((data)=>{
-         newCart=new cart(data)
-        newCart.save().then((d)=>{
-            console.log('data Saved')
-        }).catch((err)=>{
-            console.log(err)
-        })
+        res.render('showCart',{data:data,uid:bid})
      })
      .catch((err)=>{
         console.log(err)
      })
 })
 
+app.post('/cartAdd',(req,res)=>{
+    var newCart= new cart(req.body)
+    .save()
+    .then((data)=>{
+        console.log('data saved')
+        res.render('home',{})
+        .catch((err)=>{
+            console.log(err)
+        })
+        
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+    
+})
+app.get('/cartCount',(req,res)=>{
+    cart.find({bid:req.session.uid}).then((data)=>{
+        size=data.length
+        res.render('home',)
+    })
+})
 //--------------------VENDOR---------------------------------------------
 
 
