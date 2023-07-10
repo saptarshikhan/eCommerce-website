@@ -9,6 +9,7 @@ const vendorController=require('./controllers/vendor.controller')
 var bodyParser = require('body-parser')
 const cookieParser = require("cookie-parser");
 var session = require('express-session');
+const nodemailer = require('nodemailer');
 
 const { closeDelimiter } = require('ejs')
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -51,7 +52,7 @@ resave: false
 
 app.use(cookieParser());
 //===========================================================================
-app.
+
 app.post('/login',(req,res)=>{
     
     mail=req.body.email
@@ -73,8 +74,12 @@ app.post('/login',(req,res)=>{
             console.log("Session Data="+req.session.uid)
             req.session.uname=data.name
             userLogin=true
+            
             //console.log(session.cartItem)
-            res.render('home',{msg:data[0].name,data:item,userLogin:userLogin})
+            app.get('/cartCount');
+            var x=session.itemCount
+            console.log(x)
+            res.render('home',{msg:data[0].name,data:item,userLogin:userLogin,size:x})
             //res.send({msg:'success'})
 
         }
@@ -85,7 +90,17 @@ app.post('/login',(req,res)=>{
 
 
 })
-
+app.get('/cartCount',(req,res)=> {
+    session=req.session;
+    var bid="649283869b02089f8c6cd1cb"
+    cart.find({bid:bid}).then((data)=>{
+        session.itemCount= data.length
+        console.log(session.itemCount)
+        res.send({count:session.itemCount})
+    }).catch((err)=>{
+        console.log(err)
+    })
+})
 
 app.get('/addCart',(req,res)=>{
     //console.log(req.query.id)
@@ -106,10 +121,7 @@ app.post('/cartAdd',(req,res)=>{
     .save()
     .then((data)=>{
         console.log('data saved')
-        res.render('home',{})
-        .catch((err)=>{
-            console.log(err)
-        })
+
         
     })
     .catch((err)=>{
@@ -120,8 +132,52 @@ app.post('/cartAdd',(req,res)=>{
 app.get('/cartCount',(req,res)=>{
     cart.find({bid:req.session.uid}).then((data)=>{
         size=data.length
-        res.render('home',)
+        
     })
+})
+app.get('/getitemImage',(req,res)=>{
+
+})
+app.get('/cartDetails',(req,res)=>{
+    cart.find({bid:req.session.uid}).then((data)=>{
+        var total=0
+        var qnty=0
+        data.forEach((e)=>{
+
+        })
+        res.redirect('mail?to=&sub=&txt=')
+        //res.render("orderSummary",{data:data});
+
+    }).catch((err)=>{
+        console.log(err)
+    })
+    
+})
+app.get('/mail',(req,res)=>{
+    var to=req.query.to
+    var sub=req.query.sub
+    var text=req.query.txt
+    let mailTransporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'sk.fake.mail.2003@gmail.com',
+            pass: 'gzyjltcxzjmustum'
+        }
+    });
+    let mailDetails = {
+        from: 'sk.fake.mail.2003@gmail.com',
+        to: to,
+        subject: sub,
+        text: txt
+    };
+    
+    mailTransporter.sendMail(mailDetails, function(err, data) {
+        if(err) {
+            console.log('Error Occurs');
+        } else {
+            console.log('Email sent successfully');
+        }
+    });
 })
 //--------------------VENDOR---------------------------------------------
 
