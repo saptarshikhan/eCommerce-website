@@ -71,6 +71,7 @@ app.post('/login',(req,res)=>{
 
             session=req.session;
             session.uid=userID;
+            session.mail=req.body.email
             console.log("Session Data="+req.session.uid)
             req.session.uname=data.name
             userLogin=true
@@ -140,13 +141,9 @@ app.get('/getitemImage',(req,res)=>{
 })
 app.get('/cartDetails',(req,res)=>{
     cart.find({bid:req.session.uid}).then((data)=>{
-        var total=0
-        var qnty=0
-        data.forEach((e)=>{
-
-        })
-        res.redirect('mail?to=&sub=&txt=')
-        //res.render("orderSummary",{data:data});
+        res.render('orderSummary',{data:data})
+        //res.redirect('mail?to=&sub=&txt=')
+        
 
     }).catch((err)=>{
         console.log(err)
@@ -154,9 +151,10 @@ app.get('/cartDetails',(req,res)=>{
     
 })
 app.get('/mail',(req,res)=>{
-    var to=req.query.to
-    var sub=req.query.sub
-    var text=req.query.txt
+    session=req.session;
+    var to=session.mail
+    var sub="Order Summary"
+    var text="Order Placed Successfully "+new Date();
     let mailTransporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -168,7 +166,7 @@ app.get('/mail',(req,res)=>{
         from: 'sk.fake.mail.2003@gmail.com',
         to: to,
         subject: sub,
-        text: txt
+        text: text
     };
     
     mailTransporter.sendMail(mailDetails, function(err, data) {
@@ -176,6 +174,7 @@ app.get('/mail',(req,res)=>{
             console.log('Error Occurs');
         } else {
             console.log('Email sent successfully');
+            res.render('orderPlaced')
         }
     });
 })

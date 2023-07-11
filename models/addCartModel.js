@@ -4,7 +4,8 @@ const userSchema= new mongoose.Schema({
     itemID:String,
     itemName:String,
     itemPrice:String,
-    itemQuantity:Number
+    itemQuantity:Number,
+    itemImg:String
 })
 
 module.exports=mongoose.model('tbladdItemCart',userSchema)
